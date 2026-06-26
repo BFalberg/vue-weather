@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import WeatherMain from "@/components/weatherMain.vue";
+</script>
+
 <template>
-  <h1>Home</h1>
+  <WeatherMain longitude="56.123171" latitude="10.128432" />
 </template>
