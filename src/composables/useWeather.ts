@@ -45,7 +45,7 @@ export function useWeather(longitude: Ref<string>, latitude: Ref<string>) {
   }
 
   watchEffect(() => {
-    fetchWeather()
+    void fetchWeather()
   })
 
   return { data, loading, error }

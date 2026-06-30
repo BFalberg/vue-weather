@@ -35,7 +35,7 @@ export function useGeocode(longitude: Ref<string>, latitude: Ref<string>) {
   }
 
   watchEffect(() => {
-    fetchGeocode()
+    void fetchGeocode()
   })
 
   return { data, loading, error }
