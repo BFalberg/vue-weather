@@ -3,8 +3,6 @@ import { computed, toRef } from 'vue'
 import { useWeather } from '@/composables/useWeather'
 import { useGeocode } from '@/composables/useGeocode'
 import { currentHourPrefix } from '@/utils/time'
-import WeatherToday from './weatherToday.vue'
-import WeatherForecast from './weatherForecast.vue'
 
 const props = defineProps<{
   longitude: string
@@ -25,9 +23,7 @@ const currentWeather = computed(() => {
 </script>
 
 <template>
-  <div
-    class="min-h-screen bg-linear-to-b from-sky-400 to-blue-700 text-white flex flex-col items-center px-4 py-12"
-  >
+  <div class="px-4 py-12">
     <div
       v-if="weatherLoading || geocodeLoading"
       class="flex-1 flex items-center text-xl opacity-70"
