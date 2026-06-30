@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useLocation } from '@/composables/useLocation'
+import WeatherMain from '@/components/WeatherMain.vue'
 
 const { latitude, longitude, loading, error } = useLocation()
 </script>
@@ -9,5 +10,7 @@ const { latitude, longitude, loading, error } = useLocation()
   <div v-else-if="error" class=" ">
     <p class="text-red-200 text-sm">{{ error.message }}</p>
   </div>
-  <WeatherMain v-else :latitude="latitude" :longitude="longitude" />
+  <div v-else class="max-w-xl mx-auto">
+    <WeatherMain :latitude="latitude" :longitude="longitude" />
+  </div>
 </template>

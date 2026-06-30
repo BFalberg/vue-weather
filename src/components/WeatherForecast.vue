@@ -1,60 +1,38 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { HourlyData } from '@/types/weather'
+import type { DailyWeather } from '@/types/weather'
 import { formatDayLabel, formatFullLabel } from '@/utils/time'
 import WeatherIcon from './WeatherIcon.vue'
 
-const props = defineProps<{
-  weatherData: HourlyData[]
+defineProps<{
+  weatherData: DailyWeather[]
 }>()
-
-const dailyData = computed(() => {
-  const groups: Record<string, HourlyData[]> = {}
-
-  for (const item of props.weatherData) {
-    const date = item.time.slice(0, 10)
-    if (!groups[date]) groups[date] = []
-    groups[date].push(item)
-  }
-
-  return Object.entries(groups).map(([date, hours]) => {
-    const temps = hours.map((h) => h.temperature)
-    const totalPrecip = hours.reduce((sum, h) => sum + h.precipitation, 0)
-
-    return {
-      date,
-      dayLabel: formatDayLabel(date),
-      fullLabel: formatFullLabel(date),
-      maxTemp: Math.round(Math.max(...temps)),
-      minTemp: Math.round(Math.min(...temps)),
-      avgHourlyPrecip: totalPrecip / hours.length,
-    }
-  })
-})
 </script>
 
 <template>
   <div class="flex flex-col gap-2">
     <div
-      v-for="day in dailyData"
+      v-for="day in weatherData"
       :key="day.date"
-      class="flex items-center bg-white/10 backdrop-blur-sm rounded-2xl px-5 py-3"
+      class="flex flex-col bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden"
     >
-      <span class="w-20 text-sm font-medium">
-        {{ day.dayLabel }}
-        <span class="block text-xs opacity-50">{{ day.fullLabel }}</span>
-      </span>
-      <WeatherIcon
-        :precipitation="day.avgHourlyPrecip"
-        :time="day.date + 'T12:00:00'"
-        class="w-8 h-8 mx-auto"
-      />
-      <div class="ml-auto flex items-center gap-4 text-sm">
-        <span class="opacity-50">{{ day.minTemp }}°</span>
-        <div class="w-16 h-1 rounded-full bg-white/20">
-          <div class="h-full rounded-full bg-white/70" style="width: 60%" />
+      <div class="flex items-center px-5 py-3 gap-4">
+        <span class="text-sm font-medium">{{ formatDayLabel(day.date) }}</span>
+        <span class="text-xs opacity-50">{{ formatFullLabel(day.date) }}</span>
+      </div>
+
+      <div class="flex gap-3 overflow-x-auto px-4 pb-4 scrollbar-hide">
+        <div
+          v-for="hour in day.hours"
+          :key="hour.time"
+          class="flex flex-col items-center gap-1 min-w-13 text-center shrink-0"
+        >
+          <span class="text-xs opacity-60">{{ hour.time.slice(11, 16) }}</span>
+          <WeatherIcon :precipitation="hour.precipitation" :time="hour.time" class="w-6 h-6" />
+          <span class="text-sm font-medium">{{ Math.round(hour.temperature) }}°</span>
+          <span class="text-xs opacity-50"
+            >{{ hour.precipitation }} mm</span
+          >
         </div>
-        <span class="font-semibold">{{ day.maxTemp }}°</span>
       </div>
     </div>
   </div>

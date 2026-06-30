@@ -26,3 +26,8 @@ export type HourlyData = {
   windspeed: number
   precipitation: number
 }
+
+export type DailyWeather = {
+  date: string
+  hours: HourlyData[]
+}

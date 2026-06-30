@@ -11,7 +11,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col items-center text-center w-full max-w-sm">
+  <div class="flex flex-col items-center text-center w-full">
     <h1 class="text-2xl font-semibold tracking-widest uppercase opacity-80 mb-6">
       {{ props.city }}
     </h1>

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, toRef } from 'vue'
+import { toRef } from 'vue'
 import { useWeather } from '@/composables/useWeather'
 import { useGeocode } from '@/composables/useGeocode'
-import { currentHourPrefix } from '@/utils/time'
+import WeatherToday from '@/components/WeatherToday.vue'
+import WeatherForecast from '@/components/WeatherForecast.vue'
 
 const props = defineProps<{
   longitude: string
@@ -12,14 +13,13 @@ const props = defineProps<{
 const lon = toRef(props, 'longitude')
 const lat = toRef(props, 'latitude')
 
-const { data: weatherData, loading: weatherLoading, error: weatherError } = useWeather(lon, lat)
+const {
+  data: weatherData,
+  currentHour,
+  loading: weatherLoading,
+  error: weatherError,
+} = useWeather(lon, lat)
 const { data: geocodeData, loading: geocodeLoading } = useGeocode(lon, lat)
-
-const currentWeather = computed(() => {
-  if (!weatherData.value) return null
-  const nowPrefix = currentHourPrefix()
-  return weatherData.value.find((h) => h.time.slice(0, 13) >= nowPrefix) ?? weatherData.value[0]
-})
 </script>
 
 <template>
@@ -33,15 +33,15 @@ const currentWeather = computed(() => {
     <div v-else-if="weatherError" class="text-red-200 text-sm">
       {{ weatherError.message }}
     </div>
-    <template v-else-if="currentWeather && geocodeData && weatherData">
+    <template v-else-if="currentHour && geocodeData && weatherData">
       <WeatherToday
         :city="geocodeData.city"
-        :temperature="currentWeather.temperature"
-        :precipitation="currentWeather.precipitation"
-        :windspeed="currentWeather.windspeed"
-        :time="currentWeather.time"
+        :temperature="currentHour.temperature"
+        :precipitation="currentHour.precipitation"
+        :windspeed="currentHour.windspeed"
+        :time="currentHour.time"
       />
-      <div class="w-full max-w-xl mt-12">
+      <div class="w-full mt-12">
         <WeatherForecast :weatherData="weatherData" />
       </div>
     </template>

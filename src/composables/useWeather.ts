@@ -1,8 +1,9 @@
-import { ref, watchEffect, type Ref } from 'vue'
-import type { WeatherResponse, HourlyData } from '@/types/weather'
+import { ref, computed, watchEffect, type Ref } from 'vue'
+import type { WeatherResponse, HourlyData, DailyWeather } from '@/types/weather'
+import { currentHourPrefix } from '@/utils/time'
 
 export function useWeather(longitude: Ref<string>, latitude: Ref<string>) {
-  const data = ref<HourlyData[] | null>(null)
+  const data = ref<DailyWeather[] | null>(null)
   const loading = ref(false)
   const error = ref<Error | null>(null)
 
@@ -33,20 +34,53 @@ export function useWeather(longitude: Ref<string>, latitude: Ref<string>) {
     }
   }
 
-  function transformWeatherData(rawData: WeatherResponse): HourlyData[] {
-    const transformedData = rawData.hourly.time.map((time: string, index: number) => ({
+  function transformWeatherData(rawData: WeatherResponse): DailyWeather[] {
+    const hourlyData: HourlyData[] = rawData.hourly.time.map((time: string, index: number) => ({
       time,
-      temperature: rawData.hourly.temperature_2m[index],
-      windspeed: rawData.hourly.windspeed_10m[index],
-      precipitation: rawData.hourly.precipitation[index],
+      temperature: rawData.hourly.temperature_2m[index]!,
+      windspeed: rawData.hourly.windspeed_10m[index]!,
+      precipitation: rawData.hourly.precipitation[index]!,
     }))
 
-    return transformedData as HourlyData[]
+    const days = hourlyData.reduce(
+      (dailyData, hour) => {
+        const [date] = hour.time.split('T')
+
+        if (!date) {
+          return dailyData
+        }
+
+        if (!dailyData[date]) {
+          dailyData[date] = []
+        }
+
+        dailyData[date].push(hour)
+        return dailyData
+      },
+      {} as Record<string, HourlyData[]>,
+    )
+
+    const transformedData: DailyWeather[] = Object.entries(days).map(([date, hours]) => ({
+      date,
+      hours,
+    }))
+
+    return transformedData
   }
+
+  const currentHour = computed<HourlyData | null>(() => {
+    if (!data.value) return null
+    const nowPrefix = currentHourPrefix()
+    for (const day of data.value) {
+      const hour = day.hours.find((h) => h.time.slice(0, 13) >= nowPrefix)
+      if (hour) return hour
+    }
+    return data.value[0]?.hours[0] ?? null
+  })
 
   watchEffect(() => {
     void fetchWeather()
   })
 
-  return { data, loading, error }
+  return { data, currentHour, loading, error }
 }
