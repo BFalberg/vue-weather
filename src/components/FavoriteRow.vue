@@ -12,7 +12,9 @@ const lon = computed(() => String(props.favorite.longitude))
 const lat = computed(() => String(props.favorite.latitude))
 
 function select(result: Favorite) {
-  void router.push(`/city/${result.latitude}/${result.longitude}`)
+  void router.push(
+    `/city/${result.latitude}/${result.longitude}/${encodeURIComponent(result.city)}`,
+  )
 }
 
 const { currentHour, loading } = useWeather(lon, lat)

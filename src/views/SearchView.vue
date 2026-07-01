@@ -7,7 +7,9 @@ const { query, results, loading } = useGeocodeSearch()
 const router = useRouter()
 
 function select(result: GeocodeSearchResult) {
-  void router.push(`/city/${result.latitude}/${result.longitude}`)
+  void router.push(
+    `/city/${result.latitude}/${result.longitude}/${encodeURIComponent(result.name)}`,
+  )
 }
 </script>
 

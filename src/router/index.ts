@@ -19,7 +19,7 @@ const routes = [
     component: SearchView,
   },
   {
-    path: '/city/:lat/:lon',
+    path: '/city/:lat/:lon/:name?',
     component: CityView,
   },
 ]

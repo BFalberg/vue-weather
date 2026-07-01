@@ -17,6 +17,7 @@ export function useWeather(longitude: Ref<string>, latitude: Ref<string>) {
       url.searchParams.set('longitude', longitude.value)
       url.searchParams.set('hourly', 'temperature_2m,windspeed_10m,precipitation')
       url.searchParams.set('temperature_unit', 'celsius')
+      url.searchParams.set('wind_speed_unit', 'ms')
       url.searchParams.set('timezone', 'auto')
       //   url.searchParams.set("f", "GeoJSON");
 

@@ -46,7 +46,7 @@ function toggleFavorite() {
     <div class="flex gap-8 text-sm opacity-75">
       <div class="flex flex-col items-center gap-1">
         <span class="font-medium tracking-wide uppercase text-xs">Wind</span>
-        <span class="text-base">{{ props.windspeed }} km/h</span>
+        <span class="text-base">{{ props.windspeed }} m/s</span>
       </div>
       <div class="w-px bg-white/30" />
       <div class="flex flex-col items-center gap-1">
