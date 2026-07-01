@@ -1,6 +1,2 @@
-export type Favorite = {
-  id: string
-  city: string
-  longitude: number
-  latitude: number
-}
+import type { GeocodeResponse } from './geocode'
+export type Favorite = GeocodeResponse

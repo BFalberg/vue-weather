@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import WeatherMain from '@/components/WeatherMain.vue'
 
 const route = useRoute()
-const latitude = route.params.lat as string
-const longitude = route.params.lon as string
+const latitude = computed(() => route.params.lat as string)
+const longitude = computed(() => route.params.lon as string)
 </script>
 
 <template>

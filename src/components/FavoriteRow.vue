@@ -29,7 +29,7 @@ const { currentHour, loading } = useWeather(lon, lat)
       <template v-else-if="currentHour">
         <WeatherIcon
           :precipitation="currentHour.precipitation"
-          :time="new Date().toISOString()"
+          :time="currentHour.time"
           class="size-8"
         />
         {{ Math.round(currentHour.temperature) }}°
