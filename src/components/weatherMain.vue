@@ -35,6 +35,7 @@ const { data: geocodeData, loading: geocodeLoading } = useGeocode(lon, lat)
     </div>
     <template v-else-if="currentHour && geocodeData && weatherData">
       <WeatherToday
+        :currentLocation="geocodeData"
         :city="geocodeData.city"
         :temperature="currentHour.temperature"
         :precipitation="currentHour.precipitation"

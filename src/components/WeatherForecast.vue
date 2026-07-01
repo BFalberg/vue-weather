@@ -2,27 +2,25 @@
 import type { DailyWeather } from '@/types/weather'
 import { formatDayLabel, formatFullLabel } from '@/utils/time'
 import WeatherIcon from './WeatherIcon.vue'
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 const props = defineProps<{
   weatherData: DailyWeather[]
 }>()
 
 const formattedDays = computed(() => {
-    return props.weatherData.map(day => ({
-        ...day,
-        dayLabel: formatDayLabel(day.date),
-        fullLabel: formatFullLabel(day.date),
-        hours: day.hours.map(hour => ({
-            ...hour,
-            displayTime: hour.time.slice(11, 16),
-            displayTemperature: Math.round(hour.temperature),
-            displayPrecipitation: hour.precipitation
-        }))
-
-    }))
-});
-
+  return props.weatherData.map((day) => ({
+    ...day,
+    dayLabel: formatDayLabel(day.date),
+    fullLabel: formatFullLabel(day.date),
+    hours: day.hours.map((hour) => ({
+      ...hour,
+      displayTime: hour.time.slice(11, 16),
+      displayTemperature: Math.round(hour.temperature),
+      displayPrecipitation: hour.precipitation,
+    })),
+  }))
+})
 </script>
 
 <template>

@@ -13,6 +13,7 @@
     "prepare": "vp config"
   },
   "dependencies": {
+    "@lucide/vue": "^1.22.0",
     "@meteocons/svg": "^0.1.0",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.3.1",

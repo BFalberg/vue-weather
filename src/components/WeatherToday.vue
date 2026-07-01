@@ -1,19 +1,40 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import WeatherIcon from './WeatherIcon.vue'
+import { useFavoriteStore } from '@/stores/favorite'
+import type { GeocodeResponse } from '@/types/geocode'
+import { Heart } from '@lucide/vue'
+
+const favoriteStore = useFavoriteStore()
 
 const props = defineProps<{
-  city: string
+  currentLocation: GeocodeResponse
   temperature: number
   precipitation: number
   windspeed: number
   time: string
 }>()
+
+const isFav = computed(() => favoriteStore.isFavorite(props.currentLocation.id))
+
+function toggleFavorite() {
+  if (isFav.value) {
+    favoriteStore.removeFavorite(props.currentLocation.id)
+  } else {
+    favoriteStore.addFavorite(props.currentLocation)
+  }
+}
 </script>
 
 <template>
-  <div class="flex flex-col items-center text-center w-full">
+  <div class="flex flex-col items-center text-center w-full relative">
+    <div class="absolute top-0 right-0">
+      <button @click="toggleFavorite" class="p-2">
+        <Heart :fill="isFav ? 'white' : 'none'" />
+      </button>
+    </div>
     <h1 class="text-2xl font-semibold tracking-widest uppercase opacity-80 mb-6">
-      {{ props.city }}
+      {{ props.currentLocation.city }}
     </h1>
     <WeatherIcon
       :precipitation="props.precipitation"

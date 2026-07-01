@@ -1,4 +1,4 @@
-export type GeocodeResponse = {
+export type Favorite = {
   id: string
   city: string
   longitude: number

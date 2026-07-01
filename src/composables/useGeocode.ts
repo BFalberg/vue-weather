@@ -24,7 +24,10 @@ export function useGeocode(longitude: Ref<string>, latitude: Ref<string>) {
       const geocodeData = await response.json()
 
       data.value = {
+        id: `${geocodeData.countryCode}-${geocodeData.city}`,
         city: geocodeData.city,
+        longitude: geocodeData.longitude,
+        latitude: geocodeData.latitude,
       } as GeocodeResponse
     } catch (err) {
       error.value = err as Error
