@@ -20,13 +20,20 @@ const {
   error: weatherError,
 } = useWeather(lon, lat)
 const { data: geocodeData, loading: geocodeLoading } = useGeocode(lon, lat)
+
+const loadingLocation = { id: '', city: 'Loading...', longitude: 0, latitude: 0 }
 </script>
 
 <template>
-  <div v-if="weatherLoading || geocodeLoading" class="flex items-center justify-center mb-6">
-    <h1 class="text-2xl font-semibold tracking-widest uppercase opacity-80">Loading...</h1>
+  <div v-if="weatherLoading || geocodeLoading" class="animate-pulse pointer-events-none">
+    <WeatherToday
+      :currentLocation="loadingLocation"
+      :temperature="0"
+      :precipitation="0"
+      :windspeed="0"
+      :time="new Date().toISOString()"
+    />
   </div>
-
   <div v-else-if="weatherError" class="text-red-200 text-sm">
     {{ weatherError.message }}
   </div>
