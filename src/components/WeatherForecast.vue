@@ -20,7 +20,7 @@ defineProps<{
         <span class="text-xs opacity-50">{{ formatFullLabel(day.date) }}</span>
       </div>
 
-      <div class="flex gap-3 overflow-x-auto px-4 pb-4 scrollbar-hide">
+      <div class="flex gap-3 overflow-x-auto px-4 pb-4 no-scrollbar">
         <div
           v-for="hour in day.hours"
           :key="hour.time"
@@ -29,9 +29,7 @@ defineProps<{
           <span class="text-xs opacity-60">{{ hour.time.slice(11, 16) }}</span>
           <WeatherIcon :precipitation="hour.precipitation" :time="hour.time" class="w-6 h-6" />
           <span class="text-sm font-medium">{{ Math.round(hour.temperature) }}°</span>
-          <span class="text-xs opacity-50"
-            >{{ hour.precipitation }} mm</span
-          >
+          <span class="text-xs opacity-50">{{ hour.precipitation }} mm</span>
         </div>
       </div>
     </div>
