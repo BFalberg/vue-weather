@@ -34,6 +34,6 @@ jobs:
 
       - name: Deploy dist to server
         run: |
-          rsync -avz --delete dist/ \
+          rsync -avz --delete --exclude='.htaccess' dist/ \
             -e "ssh -i ~/.ssh/deploy_key" \
             ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:${{ secrets.WORK_DIR }}/
