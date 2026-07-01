@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import HomeView from '../views/HomeView.vue'
 import FavoritesView from '../views/FavoritesView.vue'
+import SearchView from '../views/SearchView.vue'
+import CityView from '../views/CityView.vue'
 
 const routes = [
   {
@@ -11,6 +13,14 @@ const routes = [
   {
     path: '/favorites',
     component: FavoritesView,
+  },
+  {
+    path: '/search',
+    component: SearchView,
+  },
+  {
+    path: '/city/:lat/:lon',
+    component: CityView,
   },
 ]
 
