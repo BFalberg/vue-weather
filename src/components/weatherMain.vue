@@ -23,27 +23,23 @@ const { data: geocodeData, loading: geocodeLoading } = useGeocode(lon, lat)
 </script>
 
 <template>
-  <div class="px-4 py-12">
-    <div
-      v-if="weatherLoading || geocodeLoading"
-      class="flex-1 flex items-center text-xl opacity-70"
-    >
-      Loading...
-    </div>
-    <div v-else-if="weatherError" class="text-red-200 text-sm">
-      {{ weatherError.message }}
-    </div>
-    <template v-else-if="currentHour && geocodeData && weatherData">
-      <WeatherToday
-        :currentLocation="geocodeData"
-        :temperature="currentHour.temperature"
-        :precipitation="currentHour.precipitation"
-        :windspeed="currentHour.windspeed"
-        :time="currentHour.time"
-      />
-      <div class="w-full mt-12">
-        <WeatherForecast :weatherData="weatherData" />
-      </div>
-    </template>
+  <div v-if="weatherLoading || geocodeLoading" class="flex items-center justify-center mb-6">
+    <h1 class="text-2xl font-semibold tracking-widest uppercase opacity-80">Loading...</h1>
   </div>
+
+  <div v-else-if="weatherError" class="text-red-200 text-sm">
+    {{ weatherError.message }}
+  </div>
+  <template v-else-if="currentHour && geocodeData && weatherData">
+    <WeatherToday
+      :currentLocation="geocodeData"
+      :temperature="currentHour.temperature"
+      :precipitation="currentHour.precipitation"
+      :windspeed="currentHour.windspeed"
+      :time="currentHour.time"
+    />
+    <div class="w-full mt-12">
+      <WeatherForecast :weatherData="weatherData" />
+    </div>
+  </template>
 </template>

@@ -28,14 +28,15 @@ function toggleFavorite() {
 
 <template>
   <div class="flex flex-col items-center text-center w-full relative">
-    <div class="absolute top-0 right-0">
-      <button @click="toggleFavorite" class="p-2">
+    <div class="grid grid-cols-3 justify-center mb-6">
+      <div></div>
+      <h1 class="text-2xl font-semibold tracking-widest uppercase opacity-80">
+        {{ props.currentLocation.city }}
+      </h1>
+      <button @click="toggleFavorite" class="justify-self-end">
         <Heart :fill="isFav ? 'white' : 'none'" />
       </button>
     </div>
-    <h1 class="text-2xl font-semibold tracking-widest uppercase opacity-80 mb-6">
-      {{ props.currentLocation.city }}
-    </h1>
     <WeatherIcon
       :precipitation="props.precipitation"
       :time="props.time"
